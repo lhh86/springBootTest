@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+   例如namespace="com.szh.mapper.personMapper"就是com.szh.mapper(包名)+personMapper(personMapper.xml文件去除后缀) -->
+<mapper namespace="com.fh.mapper.ShopMapper">
+
+    <!--查询动态数据  商品详情页-->
+    <select id="queryShopById" resultType="com.fh.model.ShopInfo">
+        select  id,name,img,price  from t_shop where id=#{id}
+    </select>
+
+        <select id="queryShopData" resultType="com.fh.model.ShopInfo">
+            select id,name,img,price from t_shop where rexiao=1
+        </select>
+    <!--迷糊查询-->
+    <select id="queryShopAll" resultType="com.fh.model.Shop" parameterType="Integer">
+        select * from t_shop where 1=1
+        <if test="typeId!=null">
+            and typeId like CONCAT('%',#{typeId},'%');
+        </if>
+    </select>
+
+    <select id="queryShopCarById" resultType="com.fh.model.ShopCar">
+        select  id,name,img,price  from t_shop where id=#{shopId}
+    </select>
+
+    <select id="queryAreaNameById" parameterType="java.lang.String" resultType="java.lang.String">
+        select name from fh_area where id=#{id}
+    </select>
+
+    <update id="updateShopCount">
+        update t_shop set storyCount=storyCount-#{count} where id=#{id} and storyCount-#{count}>=0
+    </update>
+</mapper>
